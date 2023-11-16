@@ -19,6 +19,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 /**
+ * 对上传的数据文件进行切面解码
  * @author jiaoyuanzhou
  */
 @Aspect

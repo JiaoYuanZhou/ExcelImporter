@@ -3,6 +3,7 @@ package com.citic.excelimporter.utils;
 import java.io.*;
 
 /**
+ * 用于文件合并操作
  * @author jiaoyuanzhou
  */
 public class FileUtil {

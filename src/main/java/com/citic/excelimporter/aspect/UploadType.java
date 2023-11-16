@@ -6,7 +6,6 @@ import java.util.Map;
 /**
  * @author jiaoyuanzhou
  */
-
 public enum UploadType {
     /**
      * 异步处理枚举

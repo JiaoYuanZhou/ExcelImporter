@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * 处理Excel表格，将其转换为pojo对象
  * @author jiaoyuanzhou
  */
 public class ExcelUtils {

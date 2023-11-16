@@ -1,6 +1,7 @@
 package com.citic.excelimporter.decryption;
 
 /**
+ * 使用ThreadLocal用来存放解密后的数据
  * @author jiaoyuanzhou
  */
 public class DecryptionContextHolder {

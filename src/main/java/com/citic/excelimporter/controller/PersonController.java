@@ -30,6 +30,13 @@ public class PersonController {
     private static final String UPLOAD_DIR = "uploads/";
 
 
+    /**
+     * 指定模板数据导入数据库表
+     * @param file
+     * @return
+     * @throws DataValidationException
+     * @throws IOException
+     */
     @PostMapping("/importData")
     public R<Object> importData(@RequestParam("file") MultipartFile file) throws DataValidationException, IOException {
         List<Person> people = ExcelUtils.readExcel(file.getInputStream());
@@ -39,7 +46,8 @@ public class PersonController {
 
 
     /**
-     * 指定模板数据导入数据库表(加密)
+     * 因财务文件可能涉及到保密信息，不能在网络上明文传输
+     * 拓展功能：故实现加密后传输功能，后端对其进行解密
      *
      * @param encryptedFile
      * @return
@@ -65,7 +73,8 @@ public class PersonController {
     }
 
     /**
-     * 多文件上传功能，因时间紧迫未进行多文件加密，原理和文件加密一样
+     * 因可能一次涉及到多个文件的传输，一次一次传比较麻烦
+     * 拓展功能：故实现同时上传多个文件功能
      *
      * @param encryptedFiles
      * @return
@@ -82,7 +91,8 @@ public class PersonController {
     }
 
     /**
-     * 将大文件进行分片上传，每个分片大小为1M
+     * 因大文件上传时间比较长，如果在上传的过程中出现了网络波动，那前面的都白传了
+     * 拓展功能：故实现分片上传，前端自动将文件分为多个1M大小的片，后端进行分片接收
      *
      * @param chunk
      * @param filename
@@ -131,6 +141,14 @@ public class PersonController {
         }
     }
 
+    /**
+     * 因文件的数据比较多，后台解析时间需要较长，很容易出现连接超时
+     * 拓展功能：故实现后台通过子线程异步文件处理，父线程立马返回
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws DataValidationException
+     */
     @Upload(type = UploadType.XLSX)
     @PostMapping("/syncImport")
     public R<Object> syncImport(@RequestParam("file") MultipartFile file) throws IOException, DataValidationException {

@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 
 
 /**
+ * 定义统一返回结果便于前端调试和查看
  * @author jiaoyuanzhou
  */
 @Data

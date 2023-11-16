@@ -17,9 +17,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 在切面中使用线程池异步处理数据量较大的数据，避免接口超时
  * @author jiaoyuanzhou
  */
-
 @Component
 @Aspect
 @Slf4j

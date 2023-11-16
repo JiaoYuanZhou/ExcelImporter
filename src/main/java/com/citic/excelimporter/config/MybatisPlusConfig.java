@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInt
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 
 /**
+ * 分页配置
  * @author jiaoyuanzhou
  */
 @Configuration

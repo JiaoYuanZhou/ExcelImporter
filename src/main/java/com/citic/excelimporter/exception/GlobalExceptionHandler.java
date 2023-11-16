@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 /**
+ * 全局处理异常
  * @author jiaoyuanzhou
  */
 @ControllerAdvice
