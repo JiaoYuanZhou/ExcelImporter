@@ -1,0 +1,23 @@
+server:
+  port: 8889
+
+logging:
+  level:
+    com.citic.excelimporter.mapper: debug
+
+spring:
+  application:
+    name: excelImport
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/excel_import?useSSL=false&serverTimezone=UTC
+    username: root
+    password: Admin123.
+  mybatis-plus:
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    global-config:
+      db-config:
+        id-type: auto
+
+

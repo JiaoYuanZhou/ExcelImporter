@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.citic.excelimporter.mapper.PersonMapper">
+
+
+    <!-- 批量插入人员数据 -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO person (id, name, age, highest_education, university, major, phone, email, residence_address, zip_code)
+        VALUES
+        <foreach collection="list" item="person" separator="," >
+            (
+            #{person.id},
+            #{person.name},
+            #{person.age},
+            #{person.highestEducation},
+            #{person.university},
+            #{person.major},
+            #{person.phone},
+            #{person.email},
+            #{person.residenceAddress},
+            #{person.zipCode}
+            )
+        </foreach>
+    </insert>
+
+</mapper>
