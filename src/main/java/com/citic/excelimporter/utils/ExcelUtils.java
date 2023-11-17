@@ -18,21 +18,15 @@ import java.util.List;
 public class ExcelUtils {
     public static List<Person> readExcel(InputStream decryptedStream) throws IOException, DataValidationException {
         List<Person> people = new ArrayList<>();
-
         try (Workbook workbook = WorkbookFactory.create(decryptedStream)) {
             // 假设数据在第一个sheet中
             Sheet sheet = workbook.getSheetAt(0);
-
             int totalRows = sheet.getPhysicalNumberOfRows();
-
-
             Iterator<Row> rowIterator = sheet.iterator();
-
             // 跳过表头
             if (rowIterator.hasNext()) {
                 rowIterator.next();
             }
-
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 Person person = createPersonFromRow(row, totalRows);
@@ -46,12 +40,10 @@ public class ExcelUtils {
         Person person = new Person();
         DecimalFormat decimalFormat = new DecimalFormat("0");
 
-
         int missingColumn = findMissingColumn(row);
         if (missingColumn != -1) {
             throw new DataValidationException("数据不能为空，在行： " + (row.getRowNum() + 1) + "列：" + (missingColumn+1));
         }
-
 
         if (row.getCell(2).getCellType() != CellType.NUMERIC) {
             throw new DataValidationException("年龄必须为数字类型，在行： " + (row.getRowNum() + 1) + ", 列： 3" );
@@ -61,8 +53,7 @@ public class ExcelUtils {
             throw new DataValidationException("超过行数导入限制。最大允许行数为50行。该文件行数为" + totalRows);
         }
 
-
-        person.setId(Double.valueOf(row.getCell(0).getNumericCellValue()).longValue() );
+//        person.setId(Double.valueOf(row.getCell(0).getNumericCellValue()).longValue() );
         person.setName(row.getCell(1).getStringCellValue());
         person.setAge((int) row.getCell(2).getNumericCellValue());
         person.setHighestEducation(row.getCell(3).getStringCellValue());

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @TableName("person")
 public class Person {
 
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     private String name;

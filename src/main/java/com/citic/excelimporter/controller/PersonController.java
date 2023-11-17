@@ -126,8 +126,6 @@ public class PersonController {
             // 检查是否已接收到所有分片
             if (index == totalSize - 1) {
                 // 所有分片已接收，可以在这里执行任何必要的处理
-
-
                 // 返回成功响应
                 return R.success("文件上传成功");
             }
