@@ -1,6 +1,7 @@
 package com.citic.excelimporter.utils;
 
 import com.citic.excelimporter.exception.DataValidationException;
+import com.citic.excelimporter.pojo.ExcelTable;
 import com.citic.excelimporter.pojo.Person;
 import org.apache.poi.ss.usermodel.*;
 
@@ -18,6 +19,9 @@ import java.util.List;
 public class ExcelUtils {
     public static List<Person> readExcel(InputStream decryptedStream) throws IOException, DataValidationException {
         List<Person> people = new ArrayList<>();
+        //存储错误行列数
+        List<ExcelTable> excelTables = new ArrayList<>();
+        List<ExcelTable> excelTableNumbers = new ArrayList<>();
         try (Workbook workbook = WorkbookFactory.create(decryptedStream)) {
             // 假设数据在第一个sheet中
             Sheet sheet = workbook.getSheetAt(0);
@@ -29,24 +33,46 @@ public class ExcelUtils {
             }
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                Person person = createPersonFromRow(row, totalRows);
+                Person person = createPersonFromRow(row, totalRows, excelTables, excelTableNumbers);
                 people.add(person);
+            }
+            if (!excelTables.isEmpty()) {
+                StringBuffer stringBuffer = new StringBuffer();
+                for (ExcelTable excelTable : excelTables) {
+                    stringBuffer.append("[").append(excelTable.getRow()).append(",").append(excelTable.getColumn()).append("]");
+                }
+                throw new DataValidationException("列表中数据不能为空,为空的有"+ stringBuffer);
+            }
+            if (!excelTableNumbers.isEmpty()) {
+                StringBuffer numberStringBuffer = new StringBuffer();
+                for (ExcelTable excelTableNumber : excelTableNumbers) {
+                    numberStringBuffer.append("[").append(excelTableNumber.getRow()).append(",").append(excelTableNumber.getColumn()).append("]");
+                }
+                throw new DataValidationException("列表中年龄列只能为数字类型，年龄不为整数类型的有"+ numberStringBuffer);
             }
         }
         return people;
     }
 
-    private static Person createPersonFromRow(Row row, Integer totalRows) throws DataValidationException {
+    private static Person createPersonFromRow(Row row, Integer totalRows, List<ExcelTable> excelTables, List<ExcelTable> excelTableNumbers) throws DataValidationException {
         Person person = new Person();
         DecimalFormat decimalFormat = new DecimalFormat("0");
 
         int missingColumn = findMissingColumn(row);
         if (missingColumn != -1) {
-            throw new DataValidationException("数据不能为空，在行： " + (row.getRowNum() + 1) + "列：" + (missingColumn+1));
+            ExcelTable excelTable = new ExcelTable();
+            excelTable.setRow(row.getRowNum() + 1);
+            excelTable.setColumn(missingColumn + 1);
+            excelTables.add(excelTable);
+            return person;
         }
 
         if (row.getCell(2).getCellType() != CellType.NUMERIC) {
-            throw new DataValidationException("年龄必须为数字类型，在行： " + (row.getRowNum() + 1) + ", 列： 3" );
+            ExcelTable excelTable = new ExcelTable();
+            excelTable.setRow(row.getRowNum() + 1);
+            excelTable.setColumn(3);
+            excelTableNumbers.add(excelTable);
+            return person;
         }
 
         if (row.getRowNum() >= 50) {

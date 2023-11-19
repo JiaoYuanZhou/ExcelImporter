@@ -1,6 +1,7 @@
 package com.citic.excelimporter.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.citic.excelimporter.common.R;
 import com.citic.excelimporter.pojo.Person;
 
 import java.util.List;
@@ -17,12 +18,14 @@ public interface PersonService  {
     public void importData(List<Person> people);
 
 
-    Person getById(Long id);
+    R<Object> getById(Long id);
 
-    void removeById(Long id);
+    R<Object> removeById(Long id);
 
 
-    void saveOrUpdatePerson(Person person);
+    void savePerson(Person person);
 
     IPage<Person> getPeopleWithPagination(long currentPage, long pageSize);
+
+    R<Object> updatePerson(Person person);
 }

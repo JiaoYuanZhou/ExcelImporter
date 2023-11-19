@@ -1,6 +1,14 @@
 server:
   port: 8889
 
+#反爬虫配置
+anti:
+  reptile:
+    manager:
+      enabled:  false  #true为开启反爬虫功能
+      ip-rule:
+        expiration-time: 5000 #时间窗口
+        request-max-size: 20 #在时间窗口类的最大次数
 logging:
   level:
     com.citic.excelimporter.mapper: debug
@@ -10,7 +18,7 @@ spring:
     name: excelImport
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://120.53.92.176:3306/excel_import?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/excel_import?useSSL=false&serverTimezone=UTC
     username: root
     password: Admin123.
   mybatis-plus:
@@ -19,5 +27,7 @@ spring:
     global-config:
       db-config:
         id-type: auto
+  redisson:
+    address: redis://127.0.0.1:6379
 
 

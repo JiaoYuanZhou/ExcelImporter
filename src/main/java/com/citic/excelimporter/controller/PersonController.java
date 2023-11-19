@@ -1,5 +1,6 @@
 package com.citic.excelimporter.controller;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.citic.excelimporter.aspect.Upload;
 import com.citic.excelimporter.aspect.UploadType;
@@ -10,12 +11,15 @@ import com.citic.excelimporter.exception.DataValidationException;
 import com.citic.excelimporter.pojo.Person;
 import com.citic.excelimporter.service.PersonService;
 import com.citic.excelimporter.utils.ExcelUtils;
+import lombok.Synchronized;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.io.*;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author jiaoyuanzhou
@@ -153,29 +157,42 @@ public class PersonController {
         List<Person> people = ExcelUtils.readExcel(file.getInputStream());
         personService.importData(people);
         return R.success();
+
     }
 
     /**
-     * 添加或者更新信息，ID存在就更新，不存在就执行添加操作
+     * 添加用户信息
      *
      * @param person
      * @return
      */
-    @PostMapping("/saveOrUpdate")
-    public R<Object> saveOrUpdatePerson(@RequestBody Person person) {
-        personService.saveOrUpdatePerson(person);
+    @PostMapping("/save")
+    public R<Object> savePerson(@RequestBody @Valid Person person) {
+        personService.savePerson(person);
         return R.success();
     }
 
     /**
-     * 根据ID查信息
+     * 添加用户信息
+     *
+     * @param person
+     * @return
+     */
+    @PostMapping("/update")
+    public R<Object> updatePerson(@RequestBody @Valid Person person) {
+        return personService.updatePerson(person);
+    }
+
+    /**
+     * 根据ID查信息（反爬虫）
      *
      * @param id
      * @return
      */
+    @AntiReptile
     @GetMapping("/{id}")
     public R<Object> getPerson(@PathVariable Long id) {
-        return R.success(personService.getById(id));
+        return personService.getById(id);
     }
 
     /**
@@ -186,17 +203,18 @@ public class PersonController {
      */
     @DeleteMapping("/{id}")
     public R<Object> deletePerson(@PathVariable Long id) {
-        personService.removeById(id);
-        return R.success();
+        return personService.removeById(id);
+
     }
 
     /**
-     * 分页查询
+     * 分页查询（反爬虫）
      *
      * @param currentPage
      * @param pageSize
      * @return
      */
+    @AntiReptile
     @GetMapping("/all")
     public R<Object> getAllPeopleWithPagination(@RequestParam(defaultValue = "1") long currentPage,
                                                 @RequestParam(defaultValue = "10") long pageSize) {

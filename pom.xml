@@ -89,11 +89,19 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <!--实现反爬虫-->
+        <dependency>
+            <groupId>cn.keking.project</groupId>
+            <artifactId>kk-anti-reptile</artifactId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
 
-
-
-
-
+        <!--校验注解-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>2.7.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -107,7 +115,12 @@
             <artifactId>p6spy</artifactId>
             <version>3.9.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>
